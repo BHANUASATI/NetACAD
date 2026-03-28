@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Auth Token</title>
+</head>
+<body>
+    <h2>Setting authentication token for registrar dashboard...</h2>
+    <script>
+        // Set the auth token in localStorage
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWdpc3RyYXJAdW5pdmVyc2l0eS5lZHUuaW4iLCJleHAiOjE3NzM5MDc5MDN9.ZzLZuZqnE028DqputGlVhUDW4UY4UomnBDSIKXoV0vM";
+        const user = {
+            email: "registrar@university.edu.in",
+            role: "registrar",
+            id: 44,
+            is_active: true
+        };
+        
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        document.write('<h3>Auth token set successfully!</h3>');
+        document.write('<p>Token: ' + token.substring(0, 50) + '...</p>');
+        document.write('<p>User: ' + JSON.stringify(user, null, 2) + '</p>');
+        document.write('<p><a href="/registrar-dashboard">Go to Registrar Dashboard</a></p>');
+        document.write('<p><a href="http://localhost:3000/registrar-dashboard">Go to Registrar Dashboard (Port 3000)</a></p>');
+    </script>
+</body>
+</html>
