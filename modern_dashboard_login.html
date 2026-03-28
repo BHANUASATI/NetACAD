@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modern Registrar Dashboard - Auto Login</title>
+    <style>
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .features { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Modern Registrar Dashboard</h1>
+        <p>Experience the next generation of academic management</p>
+        
+        <div class="features">
+            <div class="feature">
+                <h3>✨ Glassmorphism Design</h3>
+                <p>Beautiful frosted glass effects with animated backgrounds</p>
+            </div>
+            <div class="feature">
+                <h3>📊 Real-time Analytics</h3>
+                <p>Live data updates and interactive visualizations</p>
+            </div>
+            <div class="feature">
+                <h3>🎯 Professional UI/UX</h3>
+                <p>Enterprise-grade interface with smooth animations</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Fully Responsive</h3>
+                <p>Perfect experience on all devices and screen sizes</p>
+            </div>
+        </div>
+
+        <button class="btn" onclick="loginAndRedirect()">
+            🚀 Launch Modern Dashboard
+        </button>
+        
+        <p style="opacity: 0.8; font-size: 0.9rem;">
+            Auto-authenticating and redirecting...
+        </p>
+    </div>
+
+    <script>
+        function loginAndRedirect() {
+            // Set authentication token
+            const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWdpc3RyYXJAdW5pdmVyc2l0eS5lZHUuaW4iLCJleHAiOjE3NzM5MDc5MDN9.ZzLZuZqnE028DqputGlVhUDW4UY4UomnBDSIKXoV0vM";
+            const user = {
+                email: "registrar@university.edu.in",
+                role: "registrar",
+                id: 44,
+                is_active: true
+            };
+            
+            localStorage.setItem('authToken', token);
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            console.log('✅ Authentication set successfully');
+            console.log('🎯 Redirecting to Modern Dashboard...');
+            
+            // Redirect to modern dashboard
+            setTimeout(() => {
+                window.location.href = 'http://localhost:3001/registrar-dashboard';
+            }, 1000);
+        }
+        
+        // Auto-login after 2 seconds
+        setTimeout(loginAndRedirect, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin API Test</title>
+</head>
+<body>
+    <h1>Admin API Test</h1>
+    <button onclick="testLogin()">Test Admin Login</button>
+    <button onclick="testGetUsers()">Test Get Users</button>
+    <button onclick="testCreateUser()">Test Create User</button>
+    <div id="results"></div>
+
+    <script>
+        let authToken = '';
+
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:8000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'admin@university.edu.in',
+                        password: 'admin123'
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    authToken = data.access_token;
+                    document.getElementById('results').innerHTML = `
+                        <h3>Login Success!</h3>
+                        <p>Token: ${authToken.substring(0, 50)}...</p>
+                        <p>User: ${data.user.email} (${data.user.role})</p>
+                    `;
+                } else {
+                    document.getElementById('results').innerHTML = `<h3>Login Failed: ${data.detail}</h3>`;
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML = `<h3>Login Error: ${error.message}</h3>`;
+            }
+        }
+
+        async function testGetUsers() {
+            if (!authToken) {
+                document.getElementById('results').innerHTML = '<h3>Please login first!</h3>';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/admin/users', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('results').innerHTML = `
+                        <h3>Users Retrieved Successfully!</h3>
+                        <p>Total users: ${data.length}</p>
+                        <pre>${JSON.stringify(data.slice(0, 3), null, 2)}</pre>
+                    `;
+                } else {
+                    document.getElementById('results').innerHTML = `<h3>Get Users Failed: ${data.detail}</h3>`;
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML = `<h3>Get Users Error: ${error.message}</h3>`;
+            }
+        }
+
+        async function testCreateUser() {
+            if (!authToken) {
+                document.getElementById('results').innerHTML = '<h3>Please login first!</h3>';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/admin/users', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test User From Frontend',
+                        email: 'test.frontend@university.edu.in',
+                        role: 'student',
+                        enrollment_number: 'ENR2024006',
+                        phone: '+1234567896',
+                        department: 'Computer Science',
+                        password: 'Test@123',
+                        confirm_password: 'Test@123'
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('results').innerHTML = `
+                        <h3>User Created Successfully!</h3>
+                        <p>User ID: ${data.user_id}</p>
+                        <p>Email: ${data.email}</p>
+                        <p>Role: ${data.role}</p>
+                    `;
+                } else {
+                    document.getElementById('results').innerHTML = `<h3>Create User Failed: ${data.detail}</h3>`;
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML = `<h3>Create User Error: ${error.message}</h3>`;
+            }
+        }
+    </script>
+</body>
+</html>

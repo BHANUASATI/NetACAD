@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .logo { display: flex; align-items: center; margin-bottom: 10px; }
+        .logo-box { width: 40px; height: 40px; background: linear-gradient(45deg, #007bff, #6f42c1); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
+        .logo-text { font-size: 12px; font-weight: bold; color: white; }
+        .logo-name { font-size: 24px; font-weight: bold; background: linear-gradient(45deg, #007bff, #6f42c1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 32px; font-weight: bold; color: #007bff; }
+        .sidebar { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .menu-item { padding: 10px; margin-bottom: 5px; border-radius: 4px; cursor: pointer; }
+        .menu-item:hover { background: #f0f0f0; }
+        .menu-item.active { background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-box">
+                <div class="logo-text">DNA</div>
+            </div>
+            <div class="logo-name">AcadDNA</div>
+        </div>
+        <h3>Document Verification System</h3>
+        <p>Welcome, <span id="userName">Registrar</span></p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 20px;">
+        <div class="sidebar">
+            <h3>Menu</h3>
+            <div class="menu-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
+            <div class="menu-item" onclick="showSection('documents')">📄 Documents</div>
+            <div class="menu-item" onclick="showSection('students')">👥 Students</div>
+            <div class="menu-item" onclick="showSection('verification')">✅ Verification</div>
+            <div class="menu-item" onclick="showSection('reports')">📈 Reports</div>
+            <div class="menu-item" onclick="logout()">🚪 Logout</div>
+        </div>
+
+        <div id="content">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div>Total Documents</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div>Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">124</div>
+                    <div>Verified</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">20</div>
+                    <div>Rejected</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <p>• John Doe submitted Mark Sheet - 2 mins ago</p>
+                <p>• Jane Smith verified Transfer Certificate - 5 mins ago</p>
+                <p>• Bob Wilson uploaded Birth Certificate - 10 mins ago</p>
+            </div>
+
+            <div class="card">
+                <h3>Quick Actions</h3>
+                <button style="margin-right: 10px; padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Verify Documents</button>
+                <button style="margin-right: 10px; padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Generate Report</button>
+                <button style="padding: 8px 16px; background: #ffc107; color: black; border: none; border-radius: 4px; cursor: pointer;">View Statistics</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+        
+        if (!token || !user) {
+            window.location.href = '/login-test.html';
+        }
+
+        function showSection(section) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            event.target.classList.add('active');
+            
+            // Update content based on section
+            const content = document.getElementById('content');
+            
+            switch(section) {
+                case 'dashboard':
+                    content.innerHTML = `
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-number">156</div>
+                                <div>Total Documents</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">12</div>
+                                <div>Pending</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">124</div>
+                                <div>Verified</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">20</div>
+                                <div>Rejected</div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Recent Activity</h3>
+                            <p>• John Doe submitted Mark Sheet - 2 mins ago</p>
+                            <p>• Jane Smith verified Transfer Certificate - 5 mins ago</p>
+                            <p>• Bob Wilson uploaded Birth Certificate - 10 mins ago</p>
+                        </div>
+                    `;
+                    break;
+                case 'documents':
+                    content.innerHTML = '<div class="card"><h3>Documents</h3><p>Document management interface would go here.</p></div>';
+                    break;
+                case 'students':
+                    content.innerHTML = '<div class="card"><h3>Students</h3><p>Student management interface would go here.</p></div>';
+                    break;
+                case 'verification':
+                    content.innerHTML = '<div class="card"><h3>Verification</h3><p>Document verification interface would go here.</p></div>';
+                    break;
+                case 'reports':
+                    content.innerHTML = '<div class="card"><h3>Reports</h3><p>Reports and analytics interface would go here.</p></div>';
+                    break;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login-test.html';
+        }
+
+        // Load user info
+        try {
+            const userData = JSON.parse(user);
+            document.getElementById('userName').textContent = userData.email || 'Registrar';
+        } catch (e) {
+            document.getElementById('userName').textContent = 'Registrar';
+        }
+    </script>
+</body>
+</html>
